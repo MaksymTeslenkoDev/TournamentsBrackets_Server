@@ -1,0 +1,97 @@
+@api=http://localhost:5000
+
+###
+POST {{api}}/users
+Content-Type: application/json
+
+{
+    "name":"Kolya",
+    "email": "kolya924@gmail.com",
+    "password": "12345",
+    "icon":""
+}
+###
+POST {{api}}/auth/register
+Content-Type: application/json
+
+{
+    "name":"TestUser",
+    "email": "newEmail123@gmail.com",
+    "password": "securePassword",
+    "icon":""
+}
+###
+
+GET {{api}}/auth/check
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im5ld25ld25ld25ld0BnbWFpbC5jb20iLCJuYW1lIjoia2tra2tra2tsa2xrbCIsImljb24iOiIiLCJpYXQiOjE2NDk2MTI2MjgsImV4cCI6MTY0OTY5OTAyOH0.QdioKAjVvB6ykk1nt71Uemlxh2moC1w00qUjZPXWp0w
+
+###
+
+POST {{api}}/tournaments/create
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTYsImVtYWlsIjoibWFrc3Rlc2xlbmtvOTI0QGdtYWlsLmNvbSIsIm5hbWUiOiJSb290VVNlciIsImljb24iOiIiLCJpYXQiOjE2NTIyOTkwMzksImV4cCI6MTY1MjM4NTQzOX0.OzvQy0dPnFLT0_vU3tzo0-6rcy6KbmwmAhFBAzmZKz0
+
+{
+    "title":"Tournament 1",
+    "ownerEmail":"maksteslenko924@gmail.com",
+    "format":"Single Elimination",
+    "gameFormat":"5v5",
+    "game":"dota"
+}
+
+###
+
+GET {{api}}/tournaments/get/Dota
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTYsImVtYWlsIjoibWFrc3Rlc2xlbmtvOTI0QGdtYWlsLmNvbSIsIm5hbWUiOiJSb290VVNlciIsImljb24iOiIiLCJpYXQiOjE2NTIzODA1MjEsImV4cCI6MTY1MjQ2NjkyMX0.tlLeVyg3bzMmVB_q-pMDJ_sgE3vMpF-vYhe1g1SITPU
+
+###
+
+GET {{api}}/tournaments/getById/129
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTYsImVtYWlsIjoibWFrc3Rlc2xlbmtvOTI0QGdtYWlsLmNvbSIsIm5hbWUiOiJSb290VVNlciIsImljb24iOiIiLCJpYXQiOjE2NTUxMDk5MjcsImV4cCI6MTY1NTE5NjMyN30.4kmGnjrxXfAXshrh0olWonXLI4P1Eb-0z2O_1agGEXk
+
+###
+
+POST {{api}}/tournaments/update/132
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTYsImVtYWlsIjoibWFrc3Rlc2xlbmtvOTI0QGdtYWlsLmNvbSIsIm5hbWUiOiJSb290VVNlciIsImljb24iOiIiLCJpYXQiOjE2NTQyNjMxOTgsImV4cCI6MTY1NDM0OTU5OH0.KpcTo_O-f4efJEvaoVs_wRMoiXARt9fxTpuhWVBugHM
+
+{
+    "field":"size",
+    "value":"12"
+}
+
+### 
+
+POST {{api}}/matches/update/round/1/130
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTYsImVtYWlsIjoibWFrc3Rlc2xlbmtvOTI0QGdtYWlsLmNvbSIsIm5hbWUiOiJSb290VVNlciIsImljb24iOiIiLCJpYXQiOjE2NTQzNjM5MTMsImV4cCI6MTY1NDQ1MDMxM30.jeN-r0T5SEFHQAYLX66iAYfYyJzmICN9XOD1jaZGdQ0
+
+{
+    "field":"startAt",
+    "value":"2022-06-13"
+}
+
+###
+
+POST {{api}}/tournaments/getAll
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTYsImVtYWlsIjoibWFrc3Rlc2xlbmtvOTI0QGdtYWlsLmNvbSIsIm5hbWUiOiJSb290VVNlciIsImljb24iOiIiLCJpYXQiOjE2NTQzNjM5MTMsImV4cCI6MTY1NDQ1MDMxM30.jeN-r0T5SEFHQAYLX66iAYfYyJzmICN9XOD1jaZGdQ0
+
+{
+    "game":"Dota",
+    "accessType":"all",
+    "search":"",
+    "orderBy":"startAt"
+}
+
+###
+POST {{api}}/tournaments/addCompetitor/132
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTYsImVtYWlsIjoibWFrc3Rlc2xlbmtvOTI0QGdtYWlsLmNvbSIsIm5hbWUiOiJSb290VVNlciIsImljb24iOiIiLCJpYXQiOjE2NTUxMDk5MjcsImV4cCI6MTY1NTE5NjMyN30.4kmGnjrxXfAXshrh0olWonXLI4P1Eb-0z2O_1agGEXk
+
+{
+   "maxNumberRound":3
+}
