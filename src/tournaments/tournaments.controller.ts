@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Post,
   Query,
@@ -30,7 +31,6 @@ export class TournamentsController {
     return this.tournamentService.getUserTournaments(req.user, req.params.game);
   }
 
-  @UseGuards(JwtAuthGuard)
   @Get("/getById/:tournamentId")
   getTournamentById(@Req() req) {
     return this.tournamentService.getTournamentQuery(req.params.tournamentId);
@@ -58,5 +58,10 @@ export class TournamentsController {
       req.params.tournamentId,
       body
     );
+  }
+
+  @Delete("/delete/:tournamentId")
+  deleteTournament(@Req() req) {
+    return this.tournamentService.deleteTournament(req.params.tournamentId);
   }
 }

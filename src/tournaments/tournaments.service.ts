@@ -273,7 +273,11 @@ export class TournamentsService {
     return await this.getTournamentQuery(tournamentId);
   }
 
-  async deleteCompetitor() {}
+  async deleteTournament(tournamentId: number) {
+    await this.tournamentRepository.sequelize
+      .query(`DELETE FROM public.tournaments
+    WHERE id=${tournamentId};`);
+  }
 
   private getTournamentPlayers(tournamentUsers: Array<User>) {
     return tournamentUsers.filter(
