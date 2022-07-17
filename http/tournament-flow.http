@@ -64,4 +64,5 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTYsImVtYWlsI
 }
 
 ### 
-DELETE {{api}}/tournaments/delete/128
+DELETE {{api}}/tournaments/delete/130
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTYsImVtYWlsIjoibWFrc3Rlc2xlbmtvOTI0QGdtYWlsLmNvbSIsIm5hbWUiOiJSb290VVNlciIsImljb24iOiIiLCJpYXQiOjE2NTc4ODY0MjAsImV4cCI6MTY1Nzk3MjgyMH0.K-0cBEY_upyVog7hzo7k15B0BR4bQ4iwJfVXjqzR7ds
