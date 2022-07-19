@@ -3,7 +3,7 @@
 ###
 POST {{api}}/tournaments/create
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTYsImVtYWlsIjoibWFrc3Rlc2xlbmtvOTI0QGdtYWlsLmNvbSIsIm5hbWUiOiJSb290VVNlciIsImljb24iOiIiLCJpYXQiOjE2NTIyOTkwMzksImV4cCI6MTY1MjM4NTQzOX0.OzvQy0dPnFLT0_vU3tzo0-6rcy6KbmwmAhFBAzmZKz0
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTYsImVtYWlsIjoibWFrc3Rlc2xlbmtvOTI0QGdtYWlsLmNvbSIsIm5hbWUiOiJSb290VVNlciIsImljb24iOiIiLCJpYXQiOjE2NTgxMzc5NjAsImV4cCI6MTY1ODIyNDM2MH0.G8nMVSiUqpE5zDgtOII9Ol7T82X5MK6fW9DbqAteuUE
 
 {
     "title":"Tournament 1",
@@ -66,3 +66,11 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTYsImVtYWlsI
 ### 
 DELETE {{api}}/tournaments/delete/130
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTYsImVtYWlsIjoibWFrc3Rlc2xlbmtvOTI0QGdtYWlsLmNvbSIsIm5hbWUiOiJSb290VVNlciIsImljb24iOiIiLCJpYXQiOjE2NTc4ODY0MjAsImV4cCI6MTY1Nzk3MjgyMH0.K-0cBEY_upyVog7hzo7k15B0BR4bQ4iwJfVXjqzR7ds
+
+###
+POST {{api}}/tournaments/decodeInviteStr
+Content-Type: application/json
+
+{
+    "token":"$2a$05$G/4JlmuEKBOk.3MdGaq2C.2wNeXp5Ov.ES1EogDa9FwRBLsclHr5e"
+}

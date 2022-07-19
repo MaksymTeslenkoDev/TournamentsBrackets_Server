@@ -1,19 +1,19 @@
 import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
 import { InjectModel } from "@nestjs/sequelize";
-import sequelize, { Op } from "sequelize";
+import { Op } from "sequelize";
 import { JwtPayload } from "src/auth/auth.service";
 import { Competitor } from "src/competitors/competitors.model";
 import { MatchCompetitors } from "src/competitors/match-competitors.model";
 import { Match } from "src/matches/matches.model";
-import { MatchesService } from "src/matches/matches.service";
 import { Participant, UserRoles } from "src/participants/participants.model";
-// import { getMatchNumber, makeTreeData } from "src/tools/makeTreeData";
+import * as bcrypt from "bcryptjs";
 import { MatchTreeService } from "src/tools/matchTree/matchTree.service";
 import { User } from "src/users/users.model";
 import { AddCompetitorDto } from "./dto/addCompetitor-tournament.dto";
 import { CreateTournamentDto } from "./dto/create-tournament.dto";
 import { FiltrationSortingTournamentDto } from "./dto/filtration-sorting-tournament-dto";
 import { UpdateTournamentDto } from "./dto/update-tournament.dto";
+import { JwtService } from "@nestjs/jwt";
 import { Tournament } from "./tournaments.model";
 
 @Injectable()
@@ -38,6 +38,13 @@ export class TournamentsService {
     const DEFAULT_TEAM_COUNT = 8;
     const tournament = await this.tournamentRepository.create({
       ...tournamentDto,
+    });
+
+    const TOURNAMENT_INVITE_STR = await bcrypt.hash("" + tournament.id, 5);
+
+    await this.updateTournament(tournament.id, {
+      field: "invite",
+      value: TOURNAMENT_INVITE_STR,
     });
 
     await this.participantRepository.create({
@@ -283,5 +290,28 @@ export class TournamentsService {
     return tournamentUsers.filter(
       (i) => i["participant"].role === UserRoles.player
     );
+  }
+
+  async decodeInviteToken(token: string) {
+    try {
+      const res: Tournament[] = await this.tournamentRepository.findAll({
+        where: {
+          invite: token,
+        },
+      });
+
+      if (!res[0]) {
+        throw new HttpException("URL is incorrect", HttpStatus.BAD_REQUEST);
+      }
+
+      return {
+        id: res[0].id,
+        game: res[0].game,
+      };
+    } catch (e) {
+      if (e instanceof Error) {
+        throw new HttpException("URL is incorrect", HttpStatus.BAD_REQUEST);
+      }
+    }
   }
 }

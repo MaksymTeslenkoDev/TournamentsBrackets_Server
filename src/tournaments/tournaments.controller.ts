@@ -69,4 +69,10 @@ export class TournamentsController {
   deleteTournament(@Req() req) {
     return this.tournamentService.deleteTournament(req.params.tournamentId);
   }
+
+  @Post("/decodeInviteStr")
+  decodeInviteStr(@Body() body: { token: string }) {
+    console.log("bode", body);
+    return this.tournamentService.decodeInviteToken(body.token);
+  }
 }

@@ -119,4 +119,14 @@ export class Tournament extends Model<Tournament, TournamentCreationAttrs> {
     allowNull: true,
   })
   picture_original: string;
+
+  @Column({
+    type: DataType.STRING,
+  })
+  invite: string;
+
+  @Column({
+    type: DataType.STRING,
+  })
+  password: string;
 }
