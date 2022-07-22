@@ -13,8 +13,10 @@ import { AddCompetitorDto } from "./dto/addCompetitor-tournament.dto";
 import { CreateTournamentDto } from "./dto/create-tournament.dto";
 import { FiltrationSortingTournamentDto } from "./dto/filtration-sorting-tournament-dto";
 import { UpdateTournamentDto } from "./dto/update-tournament.dto";
-import { JwtService } from "@nestjs/jwt";
-import { Tournament } from "./tournaments.model";
+import { Tournament, TournamentAccessType } from "./tournaments.model";
+import { DeletePlayerDto } from "./dto/deletePlayer.dto";
+import { CompetitorsService } from "src/competitors/competitors.service";
+import { ParticipantsService } from "src/participants/participants.service";
 
 @Injectable()
 export class TournamentsService {
@@ -31,7 +33,9 @@ export class TournamentsService {
     private userRepository: typeof User,
     @InjectModel(MatchCompetitors)
     private matchCompetitorsRepository: typeof MatchCompetitors,
-    private matchTreeService: MatchTreeService // private matchService: MatchesService
+    private matchTreeService: MatchTreeService, // private matchService: MatchesService,
+    private competitorsService: CompetitorsService,
+    private participantsService: ParticipantsService
   ) {}
 
   async create(tournamentDto: CreateTournamentDto, user: JwtPayload) {
@@ -105,11 +109,32 @@ export class TournamentsService {
     });
   }
 
-  async getTournamentQuery(id: string | number) {
+  async getTournamentQuery(
+    id: string | number,
+    isReturnPassword: boolean = false
+  ) {
+    console.log("is return pass ", isReturnPassword);
     return await Tournament.findOne({
       where: {
         id,
       },
+
+      attributes: isReturnPassword
+        ? [
+            "id",
+            "title",
+            "type",
+            "size",
+            "game",
+            "game_format",
+            "format",
+            "accessType",
+            "startAt",
+            "finishAt",
+            "invite",
+            "password",
+          ]
+        : { exclude: ["password"] },
       include: [
         {
           model: Match,
@@ -135,6 +160,26 @@ export class TournamentsService {
         },
       ],
     });
+  }
+  async returnPassword(tournamentId: number, userEmail: string) {
+    const user = await this.userRepository.findOne({
+      where: {
+        email: userEmail,
+      },
+    });
+
+    const participant = await this.participantRepository.findOne({
+      where: {
+        user_id: user.id,
+      },
+    });
+
+    if (participant) {
+      if (["Owner", "Admin"].includes(participant.role)) {
+        return true;
+      }
+    }
+    return false;
   }
 
   async getTournamentsQuery(data: FiltrationSortingTournamentDto) {
@@ -224,8 +269,16 @@ export class TournamentsService {
     tournamentId: number,
     data: AddCompetitorDto
   ) {
-    const tournament = await this.getTournamentQuery(tournamentId);
+    const tournament = await this.getTournamentQuery(tournamentId, true);
     const playersAmount = this.getTournamentPlayers(tournament.users).length;
+
+    if (
+      tournament.accessType === TournamentAccessType.private &&
+      tournament.password !== data.tournamentPassword
+    ) {
+      throw new HttpException("Password is incorrect", HttpStatus.BAD_REQUEST);
+    }
+
     if (playersAmount > tournament.size) {
       throw new HttpException(
         "Competitors count is exceed",
@@ -280,6 +333,14 @@ export class TournamentsService {
     return await this.getTournamentQuery(tournamentId);
   }
 
+  async getTournament(tournamentId: number, userEmail?: string) {
+    const isReturnPassword = userEmail
+      ? await this.returnPassword(tournamentId, userEmail)
+      : false;
+
+    return await this.getTournamentQuery(tournamentId, isReturnPassword);
+  }
+
   async deleteTournament(tournamentId: number) {
     await this.tournamentRepository.sequelize
       .query(`DELETE FROM public.tournaments
@@ -313,5 +374,14 @@ export class TournamentsService {
         throw new HttpException("URL is incorrect", HttpStatus.BAD_REQUEST);
       }
     }
+  }
+  async deletePlayer(data: DeletePlayerDto) {
+    console.log("data ", data);
+    await this.competitorsService.deleteCompetitor(data.competitorId);
+    await this.participantsService.deleteParticipant(
+      data.tournamentId,
+      data.userEmail
+    );
+    return await this.getTournamentQuery(data.tournamentId);
   }
 }

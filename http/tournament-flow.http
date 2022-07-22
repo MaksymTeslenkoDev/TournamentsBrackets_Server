@@ -74,3 +74,14 @@ Content-Type: application/json
 {
     "token":"$2a$05$G/4JlmuEKBOk.3MdGaq2C.2wNeXp5Ov.ES1EogDa9FwRBLsclHr5e"
 }
+
+###
+POST {{api}}/tournaments/deletePlayer/151
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTksImVtYWlsIjoidXNlcjFAZ21haWwuY29tIiwibmFtZSI6IlVzZXIxIiwiaWNvbiI6IiIsImlhdCI6MTY1ODQwNDU5MSwiZXhwIjoxNjU4NDkwOTkxfQ.rMCYJC0KAribAVfCNllyjOfJuGlmE3fqdlV-2E1SoX8
+
+{
+    "tournamentId":151,
+    "competitorId":115,
+    "userEmail":"user1@gmail.com"
+}

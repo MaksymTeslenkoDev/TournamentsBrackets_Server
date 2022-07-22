@@ -1,18 +1,10 @@
-import {
-  Body,
-  Controller,
-  Delete,
-  Get,
-  Post,
-  Query,
-  Req,
-  UseGuards,
-} from "@nestjs/common";
+import { Body, Controller, Get, Post, Req, UseGuards } from "@nestjs/common";
 import { JwtAuthGuard } from "src/auth/jwt-auth.guard";
 import { Roles } from "src/auth/roles-auth.decorator";
 import { RolesGuard } from "src/auth/roles.guard";
 import { AddCompetitorDto } from "./dto/addCompetitor-tournament.dto";
 import { CreateTournamentDto } from "./dto/create-tournament.dto";
+import { DeletePlayerDto } from "./dto/deletePlayer.dto";
 import { FiltrationSortingTournamentDto } from "./dto/filtration-sorting-tournament-dto";
 import { UpdateTournamentDto } from "./dto/update-tournament.dto";
 import { TournamentsService } from "./tournaments.service";
@@ -33,9 +25,12 @@ export class TournamentsController {
     return this.tournamentService.getUserTournaments(req.user, req.params.game);
   }
 
-  @Get("/getById/:tournamentId")
+  @Get("/getById/:tournamentId/:userEmail?")
   getTournamentById(@Req() req) {
-    return this.tournamentService.getTournamentQuery(req.params.tournamentId);
+    return this.tournamentService.getTournament(
+      req.params.tournamentId,
+      req.params.userEmail
+    );
   }
 
   @UseGuards(JwtAuthGuard)
@@ -74,5 +69,13 @@ export class TournamentsController {
   decodeInviteStr(@Body() body: { token: string }) {
     console.log("bode", body);
     return this.tournamentService.decodeInviteToken(body.token);
+  }
+
+  @Roles("Player")
+  @UseGuards(RolesGuard)
+  @UseGuards(JwtAuthGuard)
+  @Post("/deletePlayer/:tournamentId")
+  deleteParticipant(@Body() body: DeletePlayerDto) {
+    return this.tournamentService.deletePlayer(body);
   }
 }

@@ -10,5 +10,6 @@ import { ParticipantsService } from "./participants.service";
   controllers: [ParticipantsController],
   providers: [ParticipantsService],
   imports: [SequelizeModule.forFeature([Participant, User, Tournament])],
+  exports: [ParticipantsService],
 })
 export class ParticipantsModule {}

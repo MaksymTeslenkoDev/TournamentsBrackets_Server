@@ -11,6 +11,8 @@ import { AuthModule } from "src/auth/auth.module";
 import { Competitor } from "src/competitors/competitors.model";
 import { MatchCompetitors } from "src/competitors/match-competitors.model";
 import { MatchesModule } from "src/matches/matches.module";
+import { CompetitorsModule } from "src/competitors/competitors.module";
+import { ParticipantsModule } from "src/participants/participants.module";
 
 @Module({
   controllers: [TournamentsController],
@@ -27,6 +29,8 @@ import { MatchesModule } from "src/matches/matches.module";
     MatchTreeModule,
     forwardRef(() => MatchesModule),
     AuthModule,
+    CompetitorsModule,
+    ParticipantsModule,
   ],
   exports: [TournamentsService],
 })
